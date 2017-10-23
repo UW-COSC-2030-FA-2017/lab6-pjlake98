@@ -1,9 +1,11 @@
 // SortedDriver.cpp
 
 // tom bailey   1445  25 mar 2014
-// Construct sorted sequences and call functions that 
+// Construct sorted sequences and call functions that
 //   process the sorted sequences.
 
+// James Fantin
+// 10/23/17
 
 #include "RandomUtilities.h"
 #include "ContainerPrinting.h"
@@ -57,14 +59,53 @@ getWords(size_t numWords, size_t wordLength, string alphabet)
 }
 
 
-// pre:  number is not empty; 
+// pre:  number is not empty;
 //       number is sorted from smallest to largest
 // post: The most isolated entry in number has been returned
 double
 mostIsolated(vector<double> & number)
 {
-	// STUB  STUB  STUB
-	return -123.456;
+    double difference = 0, isolated = 0, temp, temp2;
+    if(number.size() == 1) {
+        return number[0];
+    }
+	for(int i = 0; i < number.size() - 1; i++)
+    {
+        if(i == 0) // First item of the list
+        {
+            temp = -1*(number[i] - number[i+1]);
+            if(temp > difference)
+            {
+                difference = temp;
+                isolated = number[i];
+            }
+        }
+        else if(i == number.size() - 2) // Last item of the list
+        {
+            temp = (number[i] - number[i-1]);
+            if(temp > difference)
+            {
+                difference = temp;
+                isolated = number[i];
+            }
+        }
+        else // Middle items of the list
+        {
+            temp = -1*(number[i] - number[i+1]);
+            temp2 = (number[i] - number[i-1]);
+            if(temp < temp2 && temp > difference)
+            {
+                difference = temp;
+                isolated = number[i];
+            }
+            else if(temp2 < temp && temp2 > difference)
+            {
+                difference = temp2;
+                isolated = number[i];
+            }
+        }
+	}
+	return isolated;
 }
 
 
@@ -74,8 +115,39 @@ mostIsolated(vector<double> & number)
 int
 unmatched(list<string> & A, list<string> & B)
 {
-	// STUB  STUB  STUB
-	return -1;
+    int count = 0;
+    std::list<std::string>::iterator itA = A.begin();
+	std::list<std::string>::iterator itB = B.begin();
+    while(next(itA, 2) != A.end() || next(itB, 2) != B.end())
+    {
+        if(*itA == *itB)
+        {
+			if (next(itA,2) != A.end())
+			{
+				itA++;
+			}
+			if (next(itB, 2) != B.end())
+			{
+				itB++;
+			}
+        }
+        else if(*itA < *itB)
+        {
+			if (next(itA, 2) != A.end())
+			{
+				itA++;
+			}
+        }
+        else
+        {
+			if (next(itB, 2) != B.end())
+			{
+				itB++;
+			}
+            count++;
+        }
+    }
+	return count;
 }
 
 
