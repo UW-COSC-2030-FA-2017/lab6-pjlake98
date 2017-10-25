@@ -116,38 +116,42 @@ int
 unmatched(list<string> & A, list<string> & B)
 {
     int count = 0;
-    std::list<std::string>::iterator itA = A.begin();
-	std::list<std::string>::iterator itB = B.begin();
-    while(next(itA, 2) != A.end() || next(itB, 2) != B.end())
+    list<string>::iterator itA = A.begin();
+	list<string>::iterator itB = B.begin();
+    while(next(itA, 1) != A.end() || next(itB, 1) != B.end())
     {
-        if(*itA == *itB)
+        if(*itA == *itB) // If they are equal then we increment A
         {
-			if (next(itA,2) != A.end())
+			if (next(itA,1) != A.end())
 			{
 				itA++;
 			}
-			if (next(itB, 2) != B.end())
+			else
 			{
-				itB++;
+				break; // Break because there are no more values in A, so we can stop
 			}
         }
-        else if(*itA < *itB)
+        else if(*itA < *itB) // If A < B then we count the value and increment A to next value
         {
-			if (next(itA, 2) != A.end())
+			if (next(itA, 1) != A.end())
 			{
 				itA++;
 			}
+			count++;
         }
-        else
+        else // If A > B then we increment B to the next value
         {
-			if (next(itB, 2) != B.end())
+			if (next(itB, 1) != B.end())
 			{
 				itB++;
 			}
-            count++;
         }
     }
-	return count;
+	if (*itA < *itB) // We need to check the final values and see if A is still less than B, if it is count it
+	{
+		count++;
+	}
+    return count;
 }
 
 
